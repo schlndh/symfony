@@ -86,6 +86,14 @@ abstract class Helper implements HelperInterface
     {
         $string ??= '';
 
+        if (preg_match('//u', $string)) {
+            $result = grapheme_substr((new UnicodeString($string))->toString(), $from, $length);
+
+            return false === $result
+                ? ''
+                : $result;
+        }
+
         if (false === $encoding = mb_detect_encoding($string, null, true)) {
             return substr($string, $from, $length);
         }
